@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+
+<launch>
+	<param name="robot_description" command="xacro '$(find rl_kuka)/urdf/kuka.urdf.xacro' " />
+	<arg name="rviz_config_file" default="$(find rl_kuka)/config/kuka_config.rviz" />
+
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+	<node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" />
+	<node pkg="rviz" type="rviz" name="rviz" args="-d $(arg rviz_config_file)" />
+</launch>
