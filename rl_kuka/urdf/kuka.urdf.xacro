@@ -1,0 +1,193 @@
+<?xml version="1.0"?>
+<robot name="kuka_iiwa" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<!--Name of the robot: pan_tilt-->
+
+<xacro:property name="radius" value="0.15" />
+<xacro:property name="radius_base" value="0.3" />
+<xacro:property name="length" value="0.35" />
+<xacro:property name="orange" value="0.9764705882352941 0.45098039215686275 0.023529411764705882 1.0" />
+<xacro:property name="blueberry" value="0.27450980392156865 0.2549019607843137 0.5882352941176471 1.0" />
+<xacro:property name="red" value="1 0 0 1.0" />
+<xacro:property name="pi" value="3.14159265" />
+<xacro:property name="max_effort" value="300"/>
+  <xacro:property name="max_velocity" value="10"/>
+
+<material name="blueberry" >
+    <color rgba="0.27450980392156865 0.2549019607843137 0.5882352941176471 1.0" />
+  </material>
+
+    <!-- Define the links -->
+
+<link name="base_footprint">
+    
+</link>
+
+ <link name="base_link">
+    <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+            <mesh filename="package://rl_kuka/meshes/link_0.stl" scale="2 2 2"/>
+        </geometry>
+        <material name="LightGrey">
+            <color rgba="0.7 0.7 0.7 1.0"/>
+        </material>
+    </visual>
+ </link>
+
+ <link name="link_1">
+    <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+            <mesh filename="package://rl_kuka/meshes/link_1.stl" scale="2 2 2"/>
+        </geometry>
+        <material name="orange">
+            <color rgba="${orange}"/>
+        </material>
+    </visual>
+ </link>
+
+ <link name="link_2">
+    <visual>
+    <origin xyz="0 0 0" rpy="1.57 0 3.14"/>
+        <geometry>
+            <mesh filename="package://rl_kuka/meshes/link_2.stl" scale="2 2 2"/>
+        </geometry>
+        <material name="blueberry">
+            <color rgba="${blueberry}"/>
+        </material>
+    </visual>
+ </link>
+
+ <link name="link_3">
+    <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+            <mesh filename="package://rl_kuka/meshes/link_3.stl" scale="2 2 2"/>
+        </geometry>
+        <material name="orange">
+            <color rgba="${orange}"/>
+        </material>
+    </visual>
+ </link>
+
+ <link name="link_4">
+    <visual>
+    <origin xyz="0 0 0" rpy="1.57 0 0"/>
+        <geometry>
+            <mesh filename="package://rl_kuka/meshes/link_4.stl" scale="2 2 2"/>
+        </geometry>
+        <material name="blueberry">
+            <color rgba="${blueberry}"/>
+        </material>
+    </visual>
+ </link>
+
+ <link name="link_5">
+    <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+            <mesh filename="package://rl_kuka/meshes/link_5.stl" scale="2 2 2"/>
+        </geometry>
+        <material name="orange">
+            <color rgba="${orange}"/>
+        </material>
+    </visual>
+ </link>
+
+ <link name="link_6">
+    <visual>
+    <origin xyz="0 ${-radius-0.04} ${length/3}" rpy="0 3.14 0"/>
+        <geometry>
+            <mesh filename="package://rl_kuka/meshes/link_6.stl" scale="2 2 2"/>
+        </geometry>
+        <material name="blueberry">
+            <color rgba="${blueberry}"/>
+        </material>
+    </visual>
+ </link>
+
+ <link name="end_effector">
+    <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+            <mesh filename="package://rl_kuka/meshes/link_7.stl" scale="2 2 2"/>
+        </geometry>
+        <material name="red">
+            <color rgba="${red}"/>
+        </material>
+    </visual>
+ </link>
+    <!-- Define the joints -->
+    
+ <joint name="base_footprint_joint" type="fixed">
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+    <axis xyz="0.0 0.0 0.0"/>
+ </joint>   
+
+<joint name="base_joint" type="revolute">
+    <parent link="base_link"/>
+    <child link="link_1"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="${-170*pi/180}" upper="${170*pi/180}"
+    effort="${max_effort}" velocity="${max_velocity}"/>
+    <origin xyz="0 0 ${length-0.035}" rpy="0 0 0"/>
+</joint>
+
+<joint name="joint_1" type="revolute">
+    <parent link="link_1"/>
+    <child link="link_2"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="${-120*pi/180}" upper="${120*pi/180}"
+    effort="${max_effort}" velocity="${max_velocity}"/>
+    <origin xyz="0 0 ${length}" rpy="0 0 0"/>
+</joint>
+
+<joint name="joint_2" type="revolute">
+    <parent link="link_2"/>
+    <child link="link_3"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="${-170*pi/180}" upper="${170*pi/180}"
+    effort="${max_effort}" velocity="${max_velocity}"/>
+    <origin xyz="0 0 ${length+0.02}" rpy="0 0 0"/>
+</joint>
+
+<joint name="joint_3" type="revolute">
+    <parent link="link_3"/>
+    <child link="link_4"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="${-120*pi/180}" upper="${120*pi/180}"
+    effort="${max_effort}" velocity="${max_velocity}"/>
+    <origin xyz="0 0 ${length/3*4-0.03}" rpy="0 0 0"/>
+</joint>
+
+<joint name="joint_4" type="revolute">
+    <parent link="link_4"/>
+    <child link="link_5"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="${-170*pi/180}" upper="${170*pi/180}"
+    effort="${max_effort}" velocity="${max_velocity}"/>
+    <origin xyz="0 0 ${length+0.02}" rpy="0 0 0"/>
+</joint>
+
+<joint name="joint_5" type="revolute">
+    <parent link="link_5"/>
+    <child link="link_6"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="${-120*pi/180}" upper="${120*pi/180}"
+    effort="${max_effort}" velocity="${max_velocity}"/>
+    <origin xyz="0 ${radius} ${length/2*3-0.09}" rpy="0 0 0"/>
+</joint>
+
+<joint name="joint_6" type="revolute">
+    <parent link="link_6"/>
+    <child link="end_effector"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="${-170*pi/180}" upper="${170*pi/180}"
+    effort="${max_effort}" velocity="${max_velocity}"/>
+    <origin xyz="0 ${-radius-0.04} 0.115" rpy="0 0 0"/>
+</joint>
+
+</robot>
